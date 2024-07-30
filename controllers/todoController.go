@@ -10,23 +10,25 @@ import (
 	"github.com/shihabahmed/go-learn/types"
 )
 
-func GetTodos(ctx *gin.Context) {
-	var todos []models.ToDo
-	result := initializers.DB.Find(&todos)
+func GetToDos(ctx *gin.Context) {
+	var toDos []models.ToDo
+	log.Println(*initializers.DB)
+	result := initializers.DB.Find(&toDos)
 
 	if result.Error != nil {
+		log.Println(result.Error)
 		ctx.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Failed to retrieve todos",
+			"error": "Failed to retrieve ToDos",
 		})
 		return
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{
-		"todos": todos,
+		"toDos": toDos,
 	})
 }
 
-func CreateTodos(ctx *gin.Context) {
+func CreateToDo(ctx *gin.Context) {
 	var data types.ToDo
 	if err := ctx.ShouldBind(&data); err == nil {
 		log.Printf("Error: %v", err)
@@ -34,6 +36,7 @@ func CreateTodos(ctx *gin.Context) {
 	item := models.ToDo{
 		Title: data.Title,
 		Note:  data.Note,
+		Complete: false,
 	}
 	result := initializers.DB.Create(&item)
 	if result.Error != nil {
@@ -42,4 +45,49 @@ func CreateTodos(ctx *gin.Context) {
 		return
 	}
 	ctx.Status(http.StatusCreated)
+}
+
+func UpdateToDo(ctx *gin.Context) {
+	id := ctx.Param("id")
+	var data types.ToDo
+	if err := ctx.ShouldBind(&data); err == nil {
+		log.Printf("Error: %v", err)
+	}
+	var item models.ToDo
+	initializers.DB.First(&item, id)
+
+	initializers.DB.Model(&item).Updates(models.ToDo{
+		Title: data.Title,
+		Note:  data.Note,
+		Complete: data.Complete,
+	})
+	ctx.JSON(http.StatusOK, gin.H{
+		"toDo": item,
+	})
+}
+
+func DeleteToDo(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	initializers.DB.Delete(&models.ToDo{}, id)
+
+	ctx.Status(http.StatusOK)
+}
+
+func UpdateToDoStatus(ctx *gin.Context) {
+	id := ctx.Param("id")
+
+	var data struct { Complete bool }
+	if err := ctx.ShouldBind(&data); err == nil {
+		log.Printf("Error: %v", err)
+	}
+
+	var item models.ToDo
+	initializers.DB.First(&item, id)
+
+	initializers.DB.Model(&item).UpdateColumn("complete", data.Complete)
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"toDo": item,
+	})
 }
