@@ -1,0 +1,21 @@
+# .air.toml
+[build]
+  # bin = "bin/main" # Path to the compiled binary
+  # cmd = "go build -o bin/main.exe cmd/main.go" # Command to build the binary
+  bin = "bin/main" # Path to the compiled binary
+  cmd = "go build -o bin/main.exe cmd/main.go" # Command to build the binary
+  include_ext = ["go"] # File extensions to watch
+  exclude_dir = ["vendor"] # Directories to exclude from watching
+  exclude_file = [] # Files to exclude from watching
+
+[log]
+  time = true
+  level = "info"
+
+[server]
+  # Command to run after rebuilding
+  # cmd = "./bin/main"
+  # cmd = "go start ./cmd/main.go"
+  cmd = ""
+  # Delay before restarting the server (in milliseconds)
+  delay = 5000

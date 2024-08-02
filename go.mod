@@ -3,6 +3,7 @@ module github.com/shihabahmed/go-learn
 go 1.22.4
 
 require (
+	github.com/auth0/go-jwt-middleware/v2 v2.2.1
 	github.com/gin-gonic/gin v1.10.0
 	github.com/joho/godotenv v1.5.1
 	gorm.io/driver/postgres v1.5.9
@@ -44,5 +45,6 @@ require (
 	golang.org/x/sys v0.22.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
+	gopkg.in/go-jose/go-jose.v2 v2.6.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

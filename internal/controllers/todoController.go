@@ -5,9 +5,9 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/shihabahmed/go-learn/initializers"
-	"github.com/shihabahmed/go-learn/models"
-	"github.com/shihabahmed/go-learn/types"
+	"github.com/shihabahmed/go-learn/internal/initializers"
+	"github.com/shihabahmed/go-learn/internal/models"
+	"github.com/shihabahmed/go-learn/internal/types"
 )
 
 func GetToDos(ctx *gin.Context) {
