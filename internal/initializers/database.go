@@ -1,10 +1,10 @@
 package initializers
 
 import (
-	"log"
 	"os"
 
-	"gorm.io/driver/postgres"
+	"github.com/rs/zerolog/log"
+	"github.com/shihabahmed/go-learn/internal/constants"
 	"gorm.io/gorm"
 )
 
@@ -12,12 +12,9 @@ var DB *gorm.DB
 
 func ConnectToDB() {
 	var err error
-	dsn := os.Getenv("CONN_STRING")
-	DB, err = gorm.Open(postgres.New(postgres.Config{
-		DSN:                  dsn,
-		PreferSimpleProtocol: true,
-	}), &gorm.Config{})
-	if err != nil {
-		log.Fatalln("Could not connect to database.")
+
+	if DB, err = config.DbConfig.Connect(); err != nil {
+		log.Error().AnErr("error", err).Msgf("Failed to open db at %s", options.Config)
+		os.Exit(constants.ExitCodeDbConnectFailure)
 	}
 }

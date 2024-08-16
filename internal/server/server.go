@@ -7,13 +7,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/shihabahmed/go-learn/internal/constants"
 	"github.com/shihabahmed/go-learn/internal/controllers"
-	"github.com/shihabahmed/go-learn/internal/initializers"
 )
-
-func init() {
-	initializers.LoadEnvVariables()
-	initializers.ConnectToDB()
-}
 
 func Init() *gin.Engine {
 	godotenv.Load()
@@ -30,6 +24,7 @@ func initRoutes(server *gin.Engine) {
 	server.POST(constants.ToDoRoute, controllers.CreateToDo)
 	server.PUT(constants.ToDoRouteWithParam, controllers.UpdateToDo)
 	server.GET(constants.ToDoRoute, controllers.GetToDos)
+	server.GET(constants.ToDoRouteWithParam, controllers.GetToDoByID)
 	server.PATCH(constants.ToDoRouteWithParam, controllers.UpdateToDoStatus)
 	server.DELETE(constants.ToDoRouteWithParam, controllers.DeleteToDo)
 }

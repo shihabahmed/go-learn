@@ -28,6 +28,23 @@ func GetToDos(ctx *gin.Context) {
 	})
 }
 
+func GetToDoByID(ctx *gin.Context) {
+	id := ctx.Param("id")
+	var toDo models.ToDo
+	log.Println(*initializers.DB)
+	result := initializers.DB.First(&toDo, id)
+
+	if result.Error != nil {
+		log.Println(result.Error)
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to retrieve ToDos",
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, toDo)
+}
+
 func CreateToDo(ctx *gin.Context) {
 	var data types.ToDo
 	if err := ctx.ShouldBind(&data); err == nil {
